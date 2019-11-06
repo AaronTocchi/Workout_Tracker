@@ -6,6 +6,8 @@ const API = {
     return json[json.length - 1];
   },
   async addExercise(data) {
+    console.log(location)
+    // creates id by pulling query and splitting at = to remap an id number without ?=
     const id = location.search.split("=")[1];
 
     const res = await fetch("/api/workouts/" + id, {
