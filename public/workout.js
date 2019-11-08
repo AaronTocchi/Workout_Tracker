@@ -1,6 +1,7 @@
 async function init() {
+  console.log("its running")
   const lastWorkout = await API.getLastWorkout();
-  console.log(lastWorkout);
+  console.log("lastworkout: ", lastWorkout);
 
   document
     .querySelector("a[href='/exercise?']")
@@ -12,12 +13,14 @@ async function init() {
     numExercises: lastWorkout.exercises.length,
     ...tallyExercises(lastWorkout.exercises)
   };
+  console.log("workoutSummary", workoutSummary);
 
   renderWorkoutSummary(workoutSummary);
 }
 
 function tallyExercises(exercises) {
   return exercises.reduce((acc, curr) => {
+    console.log("acc", acc)
     if (curr.type === "resistance") {
       acc.totalWeight = (acc.totalWeight || 0) + curr.weight;
       acc.totalSets = (acc.totalSets || 0) + curr.sets;
@@ -25,7 +28,7 @@ function tallyExercises(exercises) {
     } else if (curr.type === "cardio") {
       acc.totalDistance = (acc.totalDistance || 0) + curr.distance;
     }
-
+    console.log("acc",acc)
     return acc;
   }, {});
 }
