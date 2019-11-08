@@ -1,6 +1,17 @@
 const router = require("express").Router();
 const Workout = require("../models/workout.js");
 
+router.get('/api/workouts/', function (req, res) {
+    Workout.find({})
+        .then(dbWorkout => {
+            console.log("look make muh get: ", dbWorkout);
+            res.json(dbWorkout);
+        })
+        .catch(err => {
+            res.json(err);
+        });
+})
+
 router.post('/api/workouts/', function (req, res) {
     Workout.create({})
         .then(data =>
@@ -12,33 +23,23 @@ router.post('/api/workouts/', function (req, res) {
     console.log(req.params)
     console.log(req.body)
 })
-router.put('/api/workouts/:id', function (req, res) {
-    Workout.findOneAndUpdate(
-        req.params.id,
+
+router.put('/api/workouts/:id', function ({ body, params }, res) {
+    Workout.findByIdAndUpdate(
+        params.id,
         {
             $push:
-                { exercises: req.body }
+                { exercises: body }
         }
-
     ).then(dbWorkout => {
         res.json(dbWorkout);
     })
         .catch(err => {
             res.json(err);
         });
-    console.log("req.params: ", req.params)
-    console.log("req.body: ", req.body)
+    console.log("req.params: ", params)
+    console.log("req.body: ", body)
 })
 
-router.get('/api/workouts/', function (req, res) {
-    Workout.find({})
-        .then(dbWorkout => {
-            console.log("look make muh get: ", dbWorkout);
-            res.json(dbWorkout);
-        })
-        .catch(err => {
-            res.json(err);
-        });
-})
 
 module.exports = router;
